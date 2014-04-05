@@ -6,7 +6,7 @@ $user = $_SESSION['user'];
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>CCRO DMS System</title>
+	<title>CCRO Portal</title>
 	<script language="javascript" src="<?php echo site_url("media/js/jquery-1.7.2.min.js"); ?>"></script>
 	<link rel="stylesheet" href="<?php echo site_url("media/js/development-bundle/themes/base/jquery.ui.all.css"); ?>">
 	<script src="<?php echo site_url("media/js/development-bundle/jquery-1.8.0.js"); ?>"></script>
@@ -49,7 +49,7 @@ $user = $_SESSION['user'];
 				<table cellpadding="0" cellspacing="0" width="100%">
 					<tr>
 						<td style='padding:10px;'>
-						<a style='color:white; text-decoration:none; font-size:18px;' href="<?php echo site_url(); ?>">CCRO DMS System</a>
+						<a style='color:white; text-decoration:none; font-size:18px;' href="<?php echo site_url(); ?>">CCRO Portal</a>
 						</td>
 						<?php
 						if($user){ //if logged in

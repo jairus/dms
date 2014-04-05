@@ -117,27 +117,31 @@ else{
 </td>
 <td width='50%'>
 	<table width="100%">
-	<tr class="even required"><td style="width:110px;">User Groups:</td><td>
-		<?php
-		$t = count($user_groups);
-		$can_update_usergroup = $this->user_validation->validate("users", "setUserGroups", false);
-		//echo $can_update_usergroup;
-		for($i=0; $i<$t; $i++){
-			if(in_array($user_groups[$i]['user_group'], $user_user_groups)){
-				if($can_update_usergroup){
-					?><input checked name="user_groups[]" type="checkbox" value="<?php echo htmlentitiesX($user_groups[$i]['user_group']); ?>" ><?php echo htmlentitiesX($user_groups[$i]['user_group']); ?><br /><?php
-				}
-				else{
-					?><input style='display:none' checked name="user_groups[]" type="checkbox" value="<?php echo htmlentitiesX($user_groups[$i]['user_group']); ?>" ><?php echo htmlentitiesX($user_groups[$i]['user_group']); ?><br /><?php
-				}
-			}
-			else if($can_update_usergroup){
-				?><input name="user_groups[]" type="checkbox" value="<?php echo htmlentitiesX($user_groups[$i]['user_group']); ?>" ><?php echo htmlentitiesX($user_groups[$i]['user_group']); ?><br /><?php
-			}
-		}
-		?>
-	</td></tr>
 	<?php
+	if($record['email']!="admin"){
+		?>
+		<tr class="even required"><td style="width:110px;">User Groups:</td><td>
+			<?php
+			$t = count($user_groups);
+			$can_update_usergroup = $this->user_validation->validate("users", "setUserGroups", false);
+			//echo $can_update_usergroup;
+			for($i=0; $i<$t; $i++){
+				if(in_array($user_groups[$i]['user_group'], $user_user_groups)){
+					if($can_update_usergroup){
+						?><input checked name="user_groups[]" type="checkbox" value="<?php echo htmlentitiesX($user_groups[$i]['user_group']); ?>" ><?php echo htmlentitiesX($user_groups[$i]['user_group']); ?><br /><?php
+					}
+					else{
+						?><input style='display:none' checked name="user_groups[]" type="checkbox" value="<?php echo htmlentitiesX($user_groups[$i]['user_group']); ?>" ><?php echo htmlentitiesX($user_groups[$i]['user_group']); ?><br /><?php
+					}
+				}
+				else if($can_update_usergroup){
+					?><input name="user_groups[]" type="checkbox" value="<?php echo htmlentitiesX($user_groups[$i]['user_group']); ?>" ><?php echo htmlentitiesX($user_groups[$i]['user_group']); ?><br /><?php
+				}
+			}
+			?>
+		</td></tr>
+		<?php
+	}
 	if($record['id']){
 		?>
 		<tr class="even required"><td style="width:90px;">Date/Time Added:</td><td><?php echo date("M d, Y H:i:s", strtotime($record['dateadded']) ); ?></td></tr>
