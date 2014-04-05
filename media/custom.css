@@ -1,0 +1,441 @@
+::selection{ background-color: #21913E; color: white; }
+::moz-selection{ background-color: #21913E; color: white; }
+::webkit-selection{ background-color: #21913E; color: white; }
+
+body {
+	background-color: #f0f0f0;
+	margin: 30px;
+	margin-top: 0px;
+	font: 13px/20px normal Helvetica, Arial, sans-serif;
+	color: black;
+}
+td{
+	vertical-align:top;
+}
+a {
+	color: black;
+	background-color: transparent;
+	font-weight: normal;
+}
+
+h1 {
+	color: #444;
+	background-color: transparent;
+	border-bottom: 1px solid #D0D0D0;
+	font-size: 19px;
+	font-weight: normal;
+	margin: 0 0 14px 0;
+	padding: 14px 15px 10px 15px;
+}
+
+code {
+	font-family: Consolas, Monaco, Courier New, Courier, monospace;
+	font-size: 12px;
+	background-color: #f9f9f9;
+	border: 1px solid #D0D0D0;
+	color: #002166;
+	display: block;
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+}
+
+#body{
+	margin: 0 15px 0 15px;
+}
+
+p.footer{
+	text-align: right;
+	font-size: 11px;
+	border-top: 1px solid #D0D0D0;
+	line-height: 32px;
+	padding: 0 10px 0 10px;
+	margin: 0px 0 0 0;
+}
+form{
+	margin:0px;
+}
+#container{
+	margin: 10px;
+	border: 1px solid #D0D0D0;
+	/*-webkit-box-shadow: 0 0 8px #D0D0D0;*/
+	border: 1px solid #E5E5E5;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 0 4px 18px #C8C8C8;
+	background:white;
+}
+.list{
+	margin: 10px;
+	/*border: 1px solid #D0D0D0;*/
+	/*-webkit-box-shadow: 0 0 8px #D0D0D0;*/
+	/*border: 1px solid #E5E5E5;*/
+	/*border-radius: 5px 5px 5px 5px;*/
+	background:white;
+}
+.list table{
+	border-collapse:collapse;
+	border-radius: 5px 5px 5px 5px;
+	width:100%;
+}
+.list th{
+	border: 1px solid #D0D0D0;
+	padding:5px;
+	color: white;
+	background: #666666;
+}
+.list td{
+	border: 1px solid #D0D0D0;
+	padding:5px;
+}
+#header{
+	background:#24416D;
+	padding: 5px;
+}
+#header a{
+	color:white;	
+}
+#menus{
+	background:black;
+	color:white;
+	padding:0px;
+	height: 34px;
+}
+#menus ul{
+	margin:0px;
+	padding:7px;
+	
+}
+#menus li{
+	margin:0px;
+	list-style:none;
+	display:inline;
+	padding:10px;
+	cursor:pointer;
+}
+#menus li:hover, #menus li.selected{
+	background:white;
+}
+
+#menus li:hover a{
+	color:black;
+}
+
+
+#dialoghtml{
+	text-align:center;
+	margin:auto;
+}
+
+#content{
+	padding:10px;
+}
+*{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+.font14{
+	font-size:14px;
+}
+.font16{
+	font-size:16px;
+}
+.font18{
+	font-size:18px;
+}
+.bold{
+	font-weight:bold;
+}
+.red{
+	color:red;
+}
+.right{
+	text-align:right;
+}
+.left{
+	text-align:left;
+}
+.center{
+	text-align:center;
+}
+.pad10{
+	padding: 10px;
+}
+.margin10{
+	margin:10px;
+}
+
+/* add company */
+.hint{
+	font-size:10px;
+	font-style:italic;
+	color:#666666;
+	display:inline;
+	padding: 0px 5px 0px 5px;
+}
+.more{
+	font-size:10px;
+	color:#666666;
+	padding: 0px 5px 0px 5px;
+}
+
+input[type="password"], input[type="text"], textarea{
+	border: 1px solid #aaaaaa;
+	border-radius: 3px 3px 3px 3px;
+	padding:4px;
+	width:350px;
+}
+input[name="name"]{
+
+}
+input[type="submit"], input[type="button"]{
+	min-width: 80px;
+	cursor:pointer;	
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+input[type="button"].button{
+	min-width: 50px;
+	cursor:pointer;	
+}
+input[type="button"].normal{
+	padding:2px;
+}
+
+#savebutton{
+	width:100%;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+textarea{
+	width: 350px;
+	height: 80px;
+}
+select[multiple="multiple"]{
+	height: 150px;
+	width: 250px;
+	padding: 5px;
+}
+.even{
+	
+	background:#EEEEEE;
+}
+.odd{
+	background:#FFFFFF;
+}
+.inline{
+	display:inline;
+}
+.block{
+	display:block;
+}
+.row:hover{
+	background:#FFDB96;
+}
+.inline{
+	display:inline;
+}
+.border{
+	border: 1px solid #CCCCCC;
+	border-radius: 3px 3px 3px 3px;
+}
+.hidden{
+	display:none;
+}
+.cursor{
+	cursor:pointer;
+}
+
+#peoplehtml table, 
+#companyhtml table, 
+#investment_orghtml table, 
+#competitors_html table,
+#milestoneshtml table
+{
+	border-collapse:collapse;
+}
+#peoplehtml table td, 
+#companyhtml table td, 
+#investment_orghtml table td, 
+#competitors_html table td,
+#milestoneshtml table td
+{
+	padding: 2px 5px 2px 5px;
+	border: 1px solid #AAAAAA;
+}
+
+
+
+#fundinghtml{
+	width:100%;
+}
+#fundinghtml .label{
+	background:#505050;
+	width:15%;
+	color:#FFFFFF;
+	font-size:11px;
+}
+
+#fundinghtml .label_ipc{
+	background:#CCCCCC;
+}
+
+#fundinghtml .value0{
+	font-size:11px;
+}
+#fundinghtml .value1{
+	width:20%;
+	font-size:11px;
+}
+#fundinghtml .value2{
+	width:50%;
+	
+}
+
+.fundingtable{
+	width:100%;
+	border:1px solid #CCCCCC;
+	margin-bottom:10px;
+}
+.fundingtable td{
+	padding:4px;
+}
+
+.underline{
+	text-decoration:underline;
+}
+
+.milestone{
+	padding:5px;
+	margin:5px;
+	background:white;
+	font-size:11px;
+}
+
+.lightgreen{
+	background: #E4FFE4;
+}
+.changed{
+	background: #50FA50;
+}
+
+.additem{
+	font-style:italic;
+	font-weight:bold;
+}
+
+.f_check{
+	position:relative;
+}
+.f_check img{
+	position:absolute;
+	top:-3px;
+}
+.f_delete{
+	padding-left:18px;
+}
+#ipc{
+	margin-top:10px;
+}
+
+
+/**********BLOGS RSS**********/
+.new{
+	/*background:green;*/
+}
+.submenus{
+	color:white;
+	padding:0px;
+	height: 34px;
+}
+.submenus ul{
+	margin-top:10px;
+	padding:0px;
+}
+.submenus li{
+	margin:0px;
+	list-style:none;
+	display:inline;
+	cursor:pointer;
+	background:black;
+	padding:10px;
+}
+.submenus li:hover, .submenus li.selected{
+	background:orange;
+}
+ul.items{
+	margin-top:0px;
+}
+
+/**********LATEST UPDATES**********/
+.logs_container{
+	padding:20px;
+}
+.log_date{
+	font-size:14px;
+	font-weight:bold;
+	background:orange;
+	padding:10px;
+	color:white;
+}
+.logs{
+	padding:10px;
+}
+.log_time{
+	font-size:14px;
+	padding-left:40px;
+	padding-top:5px;
+	color:green;
+}
+.log, .log a, .log b{
+	font-size:14px;
+	padding-top:5px;
+}
+.ui-dialog .ui-widget-header{
+background: white;
+border:0px;
+}
+.ui-dialog {
+	border: 2px solid gray;
+	color: #222222;
+}
+#dialoghtml{
+	text-align:center;
+}
+
+/** alerts **/
+#revcount{
+	background:red;
+	color:white;
+	z-index:1000;
+	position:absolute;
+	border-radius: 10px;
+	height:20px;
+	width:20px;
+	font-size:9px;
+	text-align:center;
+	top: -10px;
+	left: 110px;
+}
+#concount{
+	background:red;
+	color:white;
+	z-index:1000;
+	position:absolute;
+	border-radius: 10px;
+	height:20px;
+	width:20px;
+	font-size:9px;
+	text-align:center;
+	top: -10px;
+	left: 120px;
+}
+.menu a{
+	color:white;
+}
+
+.selected a{
+	color:black;
+}
+
+
