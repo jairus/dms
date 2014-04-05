@@ -5,9 +5,13 @@ class user_validation extends CI_Model {
 		parent::__construct();
 		$this->load->database();
     }
-	public function validate($class, $method){
+	public function validate($class, $function="%", $die=true){
+		$class = trim($class);
+		$function = trim($function);
 		if(!$_SESSION['user']['id']){
-			die("Access Denied");
+			if($die){
+				die("Access Denied");
+			}
 			return false;
 		}
 		//echo $class."-".$method;
@@ -16,12 +20,85 @@ class user_validation extends CI_Model {
 		}
 		else{
 			//check if current user has permission to this class
-			$sql = "select * from `user_permissions` where `class_name`='".db_escape($class)."' and `user_id`='".db_escape($_SESSION['user']['id'])."'";
+			//echo "<pre>";
+			//print_r($_SESSION);
+			
+			
+			//if deny on specific function
+			$sql = "select * from `user_permissions` where `class_name`='".db_escape($class)."' and `function`='-".db_escape($function)."'";
+			if(!trim($_SESSION['user']['usg_sqlext'])){
+				$usg = array();
+				if(is_array($_SESSION['user']['user_groups'])){
+					foreach($_SESSION['user']['user_groups'] as $value){
+						$usg[] = " `user_group` = '".db_escape($value)."' ";
+					}
+				}
+				$usgtxt = implode($usg, " or ");
+				$_SESSION['user']['usg_sqlext'] = $usgtxt;
+			}
+			else{
+				$usgtxt = $_SESSION['user']['usg_sqlext'];
+			}
+			if(trim($usgtxt)){
+				$sql .= " and ( ".$usgtxt." ) ";
+			}
+			else{
+				$sql .= " and 0 ";
+			}
+		
 			$q = $this->db->query($sql);
-			$records = $q->result_array();		
-			print_r($records);
-			//die("Access Denied");
-			//return false;
+			$records = $q->result_array();
+			$t = count($records);
+			if($t){
+				if($die){
+					die("Access Denied");
+				}
+				
+				return false;
+			}
+			
+			$sql = "select * from `user_permissions` where `class_name`='".db_escape($class)."' and `function`='%' ";
+			if(trim($usgtxt)){
+				$sql .= " and ( ".$usgtxt." ) ";
+			}
+			else{
+				$sql .= " and 0 ";
+			}
+			
+			$q = $this->db->query($sql);
+			$records = $q->result_array();
+			$t = count($records);
+			if($t){
+				return true;
+			}
+			
+			$sql = "select * from `user_permissions` where `class_name`='".db_escape($class)."'";
+			if(trim($usgtxt)){
+				$sql .= " and ( ".$usgtxt." ) ";
+			}
+			else{
+				$sql .= " and 0 ";
+			}
+			
+			$q = $this->db->query($sql);
+			$records = $q->result_array();
+			$t = count($records);
+			if($t){
+				if($function=="%"){
+					return true;
+				}
+				else{
+					for($i=0; $i<$t; $i++){
+						if($function==trim($records[$i]['function'])){
+							return true;
+						}
+					}
+				}
+			}
+			if($die){
+				die("Access Denied");
+			}
+			return false;
 		}
 	}
 }

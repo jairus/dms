@@ -10,6 +10,7 @@ class [[folder]] extends CI_Controller {
 		$this->controller = "[[folder]]";
 	}
 	public function index(){
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $this->controller;
 		$start = $_GET['start'];
@@ -40,6 +41,7 @@ class [[folder]] extends CI_Controller {
 		$this->load->view('layout/main', $data);
 	}		
 	public function search(){
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $this->controller;
 		$start = $_GET['start'];
@@ -83,6 +85,7 @@ class [[folder]] extends CI_Controller {
 		$this->load->view('layout/main', $data);		
 	}	
 	function ajax_edit(){
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $this->controller;
 		$error = false;		
@@ -115,9 +118,7 @@ class [[folder]] extends CI_Controller {
 		?>jQuery("#record_form *").attr("disabled", false);<?php
 	}	
 	function ajax_add(){
-		if(!$_SESSION['user']){
-			return false;
-		}
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $this->controller;
 		$error = false;		
@@ -146,9 +147,7 @@ class [[folder]] extends CI_Controller {
 	}
 	
 	public function edit($id){
-		if(!$_SESSION['user']){
-			return false;
-		}
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $this->controller;
 		if(!trim($id)){
@@ -168,15 +167,14 @@ class [[folder]] extends CI_Controller {
 	}
 		
 	public function add(){	
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$controller = $this->controller;
 		$data['controller'] = $controller;
 		$data['content'] = $this->load->view($controller.'/add', $data, true);
 		$this->load->view('layout/main', $data);;
 	}
 	public function ajax_delete($id=""){
-		if(!$_SESSION['user']){
-			return false;
-		}
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		if(!$id){
 			$id = $_POST['id'];

@@ -31,7 +31,8 @@ function addRecord(){
 	<option value="name">Name</option>
 	<option value="id">ID</option>	
 	-->
-	<option value="email">Email Login</option>	
+	<option value="email">Login Name</option>	
+	<option value="name">Name</option>	
 
 	</select>
 	Search: <input type='text' id='search' value="<?php echo sanitizeX($search); ?>" name='search' />
@@ -56,8 +57,8 @@ $t = count($records);
 		<!--
 		<th>Name</th>
 		-->
-		<th>Email Login</th>
-
+		<th>Login Name</th>
+		<th>Name</th>
 		<th></th>
 	</tr>
 	<?php
@@ -68,7 +69,7 @@ $t = count($records);
 			
 			<td><?php echo $start+$i+1; ?></td>	
 			<td><?php echo $records[$i]['email'];?></td>
-
+			<td><?php echo $records[$i]['name'];?></td>
 			<td width='300px'>
 			<?php
 			if($records[$i]['email']=="admin"){
@@ -82,7 +83,7 @@ $t = count($records);
 				?>
 				[ <a href="<?php echo site_url(); ?><?php echo $controller; ?>/edit/<?php echo $records[$i]['id']?>" >Edit</a> ] 
 				<?php
-				if($records[$i]['id']!=$records[$i]['id']){//should not be able to delete self
+				if($records[$i]['id']!=$_SESSION['user']['id']){//should not be able to delete self
 					?>
 					[ <a style='color: red; cursor:pointer; text-decoration: underline' onclick='deleteRecord("<?php echo htmlentitiesX($records[$i]['id']) ?>"); ' >Delete</a> ]
 					<?php

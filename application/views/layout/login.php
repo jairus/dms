@@ -14,7 +14,7 @@
 			<td class='center bold font18' colspan="2">Log In</td>
 		</tr>
 		<tr>
-			<td class='font14'>Login E-mail: </td>
+			<td class='font14'>Login Name: </td>
 			<td><input class='font14' type='text' id='login_email' name='login_email' value="<?php echo htmlentities($_GET['login_email']); ?>"></td>
 		</tr>
 		<tr>

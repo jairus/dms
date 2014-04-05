@@ -2,8 +2,9 @@
 
 class main extends CI_Controller {
 	public function index(){
-		redirect(site_url("admin"), "refresh");
-		//$this->load->view('main/main.php');
+		//redirect(site_url("admin"), "refresh");
+		$data['content'] = $this->load->view("layout/welcome", $data, true);		
+		$this->load->view('layout/main', $data);
 	}
 }
 

@@ -7,14 +7,17 @@ class admin extends CI_Controller {
 	}
 	public function index(){
 		if($_SESSION['user']){
-			redirect(site_url("admin/createcms"), "refresh");
+			//redirect(site_url("admin/createcms"), "refresh");
 			//$this->load->view('layout/main');
+			$data['content'] = $this->load->view("layout/welcome", $data, true);		
+			$this->load->view('layout/main', $data);
 		}
 		else{
 			$this->load->view('layout/main');
 		}
 	}
 	public function createcms(){
+		$this->user_validation->validate($this->router->class, $this->router->method);
 		if($_POST){
 			$table = trim($_POST['table']);
 			$folder = trim($_POST['folder']);
@@ -96,9 +99,25 @@ class admin extends CI_Controller {
 		$sql = "select * from `users` where `email`= ".$this->db->escape($_POST['login_email'])." and `password`= '".md5($_POST['password'])."'";
 		$q = $this->db->query($sql);
 		$r = $q->result_array();	
+		
+		
+		
+		
 		if($r[0]){
 			unset($_SESSION['user']);
 			$_SESSION['user'] = $r[0];
+			
+			//get user groups
+			$user_user_groups = array();
+			$sql = "select * from `user_user_groups` where `user_email` = '".db_escape($r[0]['email'])."'";
+			$q = $this->db->query($sql);
+			$uusergroups = $q->result_array();
+			foreach($uusergroups as $value){
+				$user_user_groups[] = $value['user_group'];
+			}
+			$_SESSION['user']['user_groups'] = $user_user_groups;
+			
+			
 			redirect(site_url("admin"), 'refresh');
 		}
 		else{

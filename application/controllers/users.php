@@ -6,11 +6,10 @@ class users extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('user_validation');
 		$this->table = "users";
 	}
 	public function index(){
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $table;
 		$start = $_GET['start'];
@@ -41,7 +40,7 @@ class users extends CI_Controller {
 		$this->load->view('layout/main', $data);
 	}		
 	public function search(){
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$table = $this->table;
 		$controller = $table;
 		$start = $_GET['start'];
@@ -53,7 +52,7 @@ class users extends CI_Controller {
 		
 		$sql = "select * from `".$table."`  where 1 ";
 		if($search != ''){
-			$sql .= "and LOWER(`".$filter."`) like '%".mysql_real_escape_string($search)."%'";
+			$sql .= "and LOWER(`".$filter."`) like '%".db_escape($search)."%'";
 		}
 		$sql .= " order by id desc limit $start, $limit" ;
 
@@ -64,7 +63,7 @@ class users extends CI_Controller {
 				
 		$sql = "select count(id) as `cnt`  from `".$table."` where 1 ";
 		if($search != ''){
-			$sql .= "and LOWER(`".$filter."`) like '%".mysql_real_escape_string($search)."%'";
+			$sql .= "and LOWER(`".$filter."`) like '%".db_escape($search)."%'";
 		}
 		
 		$q = $this->db->query($sql);
@@ -85,18 +84,35 @@ class users extends CI_Controller {
 		$this->load->view('layout/main', $data);		
 	}	
 	function ajax_edit(){
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		//users should always be able to edit themselves
+		if($_POST['id']==$_SESSION['user']['id']){
+		}
+		else{
+			$this->user_validation->validate(__CLASS__, __FUNCTION__);
+		}
 		$table = $this->table;
 		$controller = $table;
-		$error = false;		
+		$error = false;	
+
+		
+		foreach($_POST as $key=>$value){
+			if(!is_array($value)){
+				$_POST[$key] = trim($value);
+			}
+		}
 		
 		/*start validation*/
-		/*
-		if ($_POST['name'] == ''){
-			?>alertX("Please input name!");<?php
+
+		$id = $_POST['id'];
+		$sql = "select * from `".$table."` where `id` = '".db_escape($id)."' limit 1";
+		$q = $this->db->query($sql);
+		$record = $q->result_array();
+		$record = $record[0];
+		if($record['email']=='admin'&&$_SESSION['user']['email']!="admin"){
+			?>alertX("Error! Cannot Edit Admin");<?php
 			$error = true;
-		}
-		*/
+		}		
+
 		/*end validation*/
 		
 		if(!$error){
@@ -105,14 +121,18 @@ class users extends CI_Controller {
 			
 			$sql = " update `".$table."` set ";
 			//fields
-			//$sql .= " `name` = '".mysql_real_escape_string($_POST['name'])."'" ;									
-			$sql .= "   `email` = '".mysql_real_escape_string($_POST['email'])."'";
+			$sql .= " `name` = '".db_escape($_POST['name'])."'" ;
+			
 			if(trim($_POST['password'])){
-				$sql .= " , `password` = '".mysql_real_escape_string(md5(trim($_POST['password'])))."'";
+				$sql .= " , `password` = '".db_escape(md5(trim($_POST['password'])))."'";
 			}
 			
 			$sql .= " where `id` = '$id' limit 1";	
-			$this->db->query($sql);										
+			$this->db->query($sql);
+			
+			//set user groups
+			$this->setUserGroups($record['email'], $_POST['user_groups']);
+			
 			?>
 			alertX("Successfully Updated Record.");
 			self.location = "<?php echo site_url($controller."/edit/".$_POST['id']); ?>";
@@ -121,33 +141,59 @@ class users extends CI_Controller {
 		?>jQuery("#record_form *").attr("disabled", false);<?php
 	}	
 	function ajax_add(){
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		if(!$_SESSION['user']){
 			return false;
 		}
 		$table = $this->table;
 		$controller = $table;
 		$error = false;		
-				
+		
+		foreach($_POST as $key=>$value){
+			if(!is_array($value)){
+				$_POST[$key] = trim($value);
+			}
+		}
+		
 		/*start validation*/
-		/*
-		if ($_POST['name'] == ''){
-			?>alertX("Please input name!");<?php
+		if (trim($_POST['email']) == ''){
+			?>alertX("Please input Login Name!");<?php
 			$error = true;
 		}
-		*/
+		else if (strlen(trim($_POST['email'])) < 5){
+			?>alertX("Login Name must be at least 5 characters!");<?php
+			$error = true;
+		}
+		else if(!preg_match("/^[A-Za-z0-9_]+$/", trim($_POST['email']))&&0){
+			?>alertX("Login Name must be combination of alphanumeric characters and underscore only!");<?php
+			$error = true;
+		}
+		else if (trim($_POST['password']) == ''){
+			?>alertX("Please input Password!");<?php
+			$error = true;
+		}
+		else{
+			$sql = "select * from `users` where `email`='".db_escape(trim($_POST['email']))."'";
+			$q = $this->db->query($sql);
+			$records = $q->result_array();
+			if(count($records)){
+				?>alertX("Login Name already exists in the database. Please input a new Login Name!");<?php
+				$error = true;
+			}
+		}
 		/*end validation*/
 		
 		if(!$error){								
 			$sql = "insert into `".$table."` set ";
 			/*fields*/
-			//$sql .= " `name` = '".mysql_real_escape_string($_POST['name'])."'" ;							
-			$sql .= "   `email` = '".mysql_real_escape_string($_POST['email'])."'";
-			if(trim($_POST['password'])){
-				$sql .= " , `password` = '".mysql_real_escape_string(md5(trim($_POST['password'])))."'";
-			}
+			$sql .= " `name` = '".db_escape($_POST['name'])."', " ;							
+			$sql .= "  `email` = '".db_escape($_POST['email'])."', ";
+			$sql .= " `password` = '".db_escape(md5(trim($_POST['password'])))."', ";
+			$sql .= "   `dateadded` = NOW() ";
+			$this->db->query($sql);			
 
-			$this->db->query($sql);										
+			$this->setUserGroups($_POST['email'], $_POST['user_groups']);
+			
 			?>
 			alertX("Successfully Inserted Record.");
 			self.location = "<?php echo site_url($controller); ?>";
@@ -157,7 +203,12 @@ class users extends CI_Controller {
 	}
 	
 	public function edit($id){
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		//users should always be able to edit themselves
+		if($id==$_SESSION['user']['id']){
+		}
+		else{
+			$this->user_validation->validate(__CLASS__, __FUNCTION__);
+		}
 		if(!$_SESSION['user']){
 			return false;
 		}
@@ -166,45 +217,105 @@ class users extends CI_Controller {
 		if(!trim($id)){
 			redirect(site_url($controller));
 		}
-		$sql = "select * from `".$table."` where `id` = '".mysql_real_escape_string($id)."' limit 1";
+		$sql = "select * from `".$table."` where `id` = '".db_escape($id)."' limit 1";
 		$q = $this->db->query($sql);
 		$record = $q->result_array();
 		$record = $record[0];
+		if($record['email']=='admin'&&$_SESSION['user']['email']!="admin"){
+			die("Cannot Edit Admin");
+		}
+		//get user groups
+		$sql = "select `user_group` from `user_permissions` group by `user_group`";
+		$q = $this->db->query($sql);
+		$user_groups = $q->result_array();
+		
+		$user_user_groups = array();
+		$sql = "select * from `user_user_groups` where `user_email` = '".db_escape($record['email'])."'";
+		$q = $this->db->query($sql);
+		$uusergroups = $q->result_array();
+		foreach($uusergroups as $value){
+			$user_user_groups[] = $value['user_group'];
+		}
+		
 		if(!trim($record['id'])){
 			redirect(site_url($controller));
 		}
 		$data['record'] = $record;
+		$data['user_user_groups'] = $user_user_groups;
+		$data['user_groups'] = $user_groups;
 		$data['controller'] = $controller;
 		$data['content'] = $this->load->view($controller.'/add', $data, true);		
 		$this->load->view('layout/main', $data);;
 	}
 		
 	public function add(){	
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		$controller = $this->table;
 		$data['controller'] = $controller;
+		//get user groups
+		$sql = "select `user_group` from `user_permissions` group by `user_group`";
+		$q = $this->db->query($sql);
+		$user_groups = $q->result_array();
+		$user_user_groups = array();
+		$data['user_user_groups'] = $user_user_groups;
+		$data['user_groups'] = $user_groups;
 		$data['content'] = $this->load->view($controller.'/add', $data, true);
 		$this->load->view('layout/main', $data);;
 	}
 	public function ajax_delete($id=""){
-		$this->user_validation->validate($this->router->class, $this->router->method);
+		$this->user_validation->validate(__CLASS__, __FUNCTION__);
 		if(!$_SESSION['user']){
 			return false;
 		}
-		if($_SESSION['user']['id']==trim($id)||$_SESSION['user']['email']=="admin"){ //cannot delete self and cannot delete admin
+		
+		if($_SESSION['user']['id']==trim($id)){ //cannot delete self and cannot delete admin
+			die("Cannot Delete Self");
 			return false;
 		}
+		
+		$id = db_escape($id);
+		//get user details
+		$sql = "select * from `users` where `id`='".$id."'";
+		$q = $this->db->query($sql);
+		$record = $q->result_array();
+		$record = $record[0];
+		
+
+		if($record['email']=="admin"){
+			die("Cannot Delete Admin");
+			return false;
+		}
+		
 		$table = $this->table;
 		if(!$id){
 			$id = $_POST['id'];
 		}
-		$id = mysql_real_escape_string($id);
-		$sql = "delete from `".$table."` where id = '".$id."' limit 1";
+		
+		//delete user user groups
+		$sql = "delete from `user_user_groups` where `user_email` = '".db_escape(trim($record['email']))."'";
+		$q = $this->db->query($sql);
+		
+		//delete users
+		$sql = "delete from `".$table."` where id = '".$id."'";
 		$q = $this->db->query($sql);
 		?>
 		alertX("Successfully deleted.");
 		<?php		
 		exit();
+	}
+	private function setUserGroups($email, $user_groups){
+		if($this->user_validation->validate(__CLASS__, __FUNCTION__, false)){
+			//delete user group
+			$sql = "delete from `user_user_groups` where `user_email` = '".db_escape($email)."'";
+			$this->db->query($sql);
+			if(is_array($user_groups)){
+				foreach($user_groups as $value){
+					$sql = "insert into `user_user_groups` set `user_email` = '".db_escape($email)."', `user_group`='".db_escape($value)."'";
+					$this->db->query($sql);
+				}
+			}
+		}
+		
 	}
 }
 ?>
