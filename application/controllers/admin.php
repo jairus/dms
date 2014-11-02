@@ -21,6 +21,7 @@ class admin extends CI_Controller {
 		if($_POST){
 			$table = trim($_POST['table']);
 			$folder = trim($_POST['folder']);
+			$display = trim($_POST['display']);
 			if(!$folder){
 				$folder = $table;
 			}
@@ -85,7 +86,15 @@ class admin extends CI_Controller {
 			$contents = str_replace("[[display_values]]", $str2, $contents);
 			file_put_contents(dirname(__FILE__)."/../views/".$folder."/main.php", $contents);
 			
-			
+			//setup the menu
+			$menu_contents = file_get_contents(dirname(__FILE__)."/admin/menu.txt");
+			$menu_contents = str_replace("[[controller]]", $folder, $menu_contents);
+			$menu_contents = str_replace("[[display]]", $display, $menu_contents);
+			$contents = file_get_contents(dirname(__FILE__)."/../views/layout/menus.php");
+			if(strpos($menu_contents, $contents)===false){
+				$contents = str_replace("/*[[MENU]]*/", $menu_contents."\n/*[[MENU]]*/", $contents);
+				file_put_contents(dirname(__FILE__)."/../views/layout/menus.php", $contents);
+			}
 			redirect(site_url("admin/createcms/?message=Done!"), 'refresh');
 		}
 		$data['createcms'] = 1;

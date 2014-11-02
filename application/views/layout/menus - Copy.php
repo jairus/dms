@@ -19,14 +19,6 @@ $method = $this->router->method;
 		</li>
 		<?php
 	}
-	if($this->user_validation->validate("queue", "index", false)){
-		?>
-		<li <?php if($controller=="queue"){ echo "class='selected'"; } ?> onclick='self.location="<?php echo site_url("queue");?>"'>
-			<a href='<?php echo site_url("queue");?>'>Queueing</a>
-		</li>
-		<?php
-	}
-/*[[MENU]]*/
 	if($this->user_validation->validate("admin", "createcms", false)){
 		?>
 		<li <?php if($controller=="admin"&&$method=="createcms"){ echo "class='selected'"; } ?> onclick='self.location="<?php echo site_url("admin/createcms");?>"'>
@@ -34,6 +26,7 @@ $method = $this->router->method;
 		</li>
 		<?php
 	}
+	/*[[MENU]]*/
 	?>
 	
 </ul>

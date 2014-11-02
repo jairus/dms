@@ -19,6 +19,10 @@
 			<td><input class='font14' type='text' id='folder' name='folder'></td>
 		</tr>
 		<tr>
+			<td class='font14'>Controller Display Name: </td>
+			<td><input class='font14' type='text' id='display' name='display'></td>
+		</tr>
+		<tr>
 			<td class='font14'>Edit Fields and Labels:</td>
 			<td>
 			e.g. name|Name (new line separated for multiple entry)
