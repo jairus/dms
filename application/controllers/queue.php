@@ -95,6 +95,8 @@ class queue extends CI_Controller {
 		`office` = '".mysql_real_escape_string($_POST['office'])."'
 		";
 		$q = $this->db->query($sql);
+		$commands = $this->getCommands($_POST['office']);
+		echo json_encode($commands);
 	}
 	public function search(){
 		$this->user_validation->validate(__CLASS__, __FUNCTION__);

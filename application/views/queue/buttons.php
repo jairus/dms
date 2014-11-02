@@ -24,7 +24,15 @@
 			data: { office: "<?php echo $office; ?>", command: station, value: queue }
 		})
 		.done(function( msg ) {
-			//alert( "Data Saved: " + msg );
+			commands = JSON.parse(msg);
+			stationvals = commands['stationvals'];
+			for(x in stationvals){
+				index = x;
+				val = stationvals[index];
+				if(jQuery("#queue"+index).val()!=val){
+					jQuery("#queue"+index).val(val);
+				}
+			}
 		});
   
   
