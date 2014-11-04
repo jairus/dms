@@ -79,34 +79,37 @@ function fetchQueue(){
 }
 
 .numbers .queue_num{
-	font-size:70px;
+	font-size:53px;
 	color:white;
 	background:black;
 	width:10%;
 	border-bottom: 1px solid black;
-	padding:10px;
+	padding:5px;
 }
 
 .numbers .queue{
-	font-size:70px;
+	font-size:53px;
 	color:white;
 	width:90%;	
 	border-bottom: 1px solid black;
-	padding:10px;
+	padding:5px;
 	text-align:center;
 }
 
 .now_serving{
-	font-size:70px;
+	font-size:53px;
 	color:white;
 	width:100%;	
 	border-bottom: 1px solid black;
-	padding:10px;
+	padding:5px;
 	text-align:center;
 	background: red;
 }
+.now_serving td{
+	height:95px;
+}
 .now{
-	font-size:35px;
+	font-size:23px;
 }
 
 
@@ -115,11 +118,11 @@ body{
 }
 #marquee{
 	height:60px;
-	padding:10px;
+	padding:5px;
 	background:gray;
 }
 #marquee marquee{
-	font-size:40px;
+	font-size:53px;
 }
 </style>
 </head>
@@ -129,7 +132,7 @@ body{
 	<td class="numbers_container" style="width:25%">
 		<table class="now_serving" cellpadding=0 cellspacing=0>
 			<tr>
-				<td style="height:150px;">
+				<td>
 					<div class="now_container">
 						<div class="now">Now Serving</div>
 						<div class="now_num">0</div>
