@@ -58,7 +58,7 @@ class queue extends CI_Controller {
 	private function getCommands($office){
 		$table = $this->table;
 		$controller = $this->controller;
-		$sql = "select * from `".$table."` where `office`='".mysql_real_escape_string($office)."'";
+		$sql = "select * from `".$table."` where `office`='".mysql_real_escape_string($office)."' order by `command` asc";
 		$q = $this->db->query($sql);
 		$records = $q->result_array();
 		$stationvals = array();
@@ -69,9 +69,11 @@ class queue extends CI_Controller {
 				$stationvals[$value['command']] = $value['value'];
 			}
 			else{
-				$commands[] = $value;
+				$commands[$value['command']] = $value['value'];
+				$commands[$value['command']."_md5"] = md5($value['value']);
 			}
 		}
+		
 		$ret['stationvals'] = $stationvals;
 		$ret['commands'] = $commands;
 		return $ret;

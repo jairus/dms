@@ -92,7 +92,7 @@ else{
 		-->
 		<tr class="even required"><td>* Office:</td><td><input type="text" name="office" size="40"></td></tr>
 <tr class="even required"><td>* Command:</td><td><input type="text" name="command" size="40"></td></tr>
-<tr class="even required"><td>* Value:</td><td><input type="text" name="value" size="40"></td></tr>
+<tr class="even required"><td>* Value:</td><td><textarea name="value"></textarea></td></tr>
 
 	</table>
 </td>

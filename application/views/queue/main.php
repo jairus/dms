@@ -76,7 +76,7 @@ $t = count($records);
 			<!--<td><?php //echo $records[$i]['name'];?></td>-->		
 			<td><?php echo $records[$i]['office'];?></td>
 <td><?php echo $records[$i]['command'];?></td>
-<td><?php echo $records[$i]['value'];?></td>
+<td><?php echo htmlentitiesX($records[$i]['value']);?></td>
 
 			<td width='300px'>
 			[ <a href="<?php echo site_url(); ?><?php echo $controller; ?>/edit/<?php echo $records[$i]['id']?>" >Edit</a> ] 
