@@ -24,15 +24,18 @@ function fetchQueue(){
 		commands = JSON.parse(msg);
 		stationvals = commands['stationvals'];
 		codes = commands['commands'];
+		lastnum = commands['lastnum'];
 		for(x in stationvals){
 			index = x;
 			val = stationvals[index];
 			if(jQuery("#queue"+index).html()!=val){
 				jQuery("#queue"+index).html(val);
-				jQuery(".now_num").html(val);
-				elem = jQuery(".now_container");
-				blink(elem);
 			}
+		}
+		if(jQuery(".now_num").html()!=lastnum){
+			jQuery(".now_num").html(lastnum);
+			elem = jQuery(".now_container");
+			blink(elem);
 		}
 		for(x in codes){
 			index = x;

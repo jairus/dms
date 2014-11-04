@@ -63,17 +63,21 @@ class queue extends CI_Controller {
 		$records = $q->result_array();
 		$stationvals = array();
 		$commands = array();
+		$lastnum = 0;
 		foreach($records as $value){
 			if(strpos(trim($value['command']), "station_")===0){
 				//$value['value'] = substr("000".$value['value'], -3);
 				$stationvals[$value['command']] = $value['value'];
+				if($lastnum<($value['value']*1)){
+					$lastnum = $value['value'];
+				}
 			}
 			else{
 				$commands[$value['command']] = $value['value'];
 				$commands[$value['command']."_md5"] = md5($value['value']);
 			}
 		}
-		
+		$ret['lastnum'] = $lastnum;
 		$ret['stationvals'] = $stationvals;
 		$ret['commands'] = $commands;
 		return $ret;
