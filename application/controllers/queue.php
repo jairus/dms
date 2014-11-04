@@ -61,11 +61,11 @@ class queue extends CI_Controller {
 		$sql = "select * from `".$table."` where `office`='".mysql_real_escape_string($office)."'";
 		$q = $this->db->query($sql);
 		$records = $q->result_array();
-		$records = $q->result_array();
 		$stationvals = array();
 		$commands = array();
 		foreach($records as $value){
 			if(strpos(trim($value['command']), "station_")===0){
+				//$value['value'] = substr("000".$value['value'], -3);
 				$stationvals[$value['command']] = $value['value'];
 			}
 			else{
@@ -91,7 +91,32 @@ class queue extends CI_Controller {
 		$this->load->view($controller.'/display', $data);
 	}
 	public function submitQueue(){
-		$sql = "update `queue` set `value`='".mysql_real_escape_string($_POST['value'])."' where `command`='".mysql_real_escape_string($_POST['command'])."' and 
+		if($_POST['increment']!=0){
+			$sql = "select * from `queue` where `office`='".mysql_real_escape_string($_POST['office'])."' and `command` like '".mysql_real_escape_string("station_%")."' ";
+			$q = $this->db->query($sql);
+			$records = $q->result_array();
+			$queue = $records[0]['value'];
+			$t = count($records);
+			for($i=0; $i<$t; $i++){
+				if($queue < $records[$i]['value']){
+					$queue = $records[$i]['value'];
+				}
+			}
+			if($_POST['increment']<0){
+				$queue -= 1;
+			}
+			else{
+				$queue += 1;
+			}
+		}
+		else{
+			$queue = $_POST['value'];
+		}
+		
+		//print_r($records);
+		//$queue = $_POST['value'];
+		
+		$sql = "update `queue` set `value`='".mysql_real_escape_string($queue)."' where `command`='".mysql_real_escape_string($_POST['command'])."' and 
 		`office` = '".mysql_real_escape_string($_POST['office'])."'
 		";
 		$q = $this->db->query($sql);

@@ -8,20 +8,15 @@
 			increment = 0;
 		}
 		increment = uNum(increment);
-		queue = uNum(jQuery("#queue"+station).val());
-		queue += increment;
-		if(queue<0){
-			queue = 0;
-		}
-		if(queue>300){
-			queue = 0;
-		}
-		jQuery("#queue"+station).val(queue);
+		//queue = uNum(jQuery("#queue"+station).val());
+		//queue += increment;
+		
+		value = jQuery("#queue"+station).val();
 		
 		jQuery.ajax({
 			type: "POST",
 			url: "<?php echo site_url("queue/submitQueue"); ?>/",
-			data: { office: "<?php echo $office; ?>", command: station, value: queue }
+			data: { office: "<?php echo $office; ?>", command: station, increment: increment, value: value}
 		})
 		.done(function( msg ) {
 			commands = JSON.parse(msg);
